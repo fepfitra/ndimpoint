@@ -1,7 +1,7 @@
 use std::ops::{Add, Div, Mul, Sub};
 
 #[derive(Debug, Clone)]
-struct Point<T> {
+pub struct Point<T> {
     p: Vec<T>,
 }
 
@@ -9,19 +9,19 @@ impl<T> Point<T>
 where
     T: Into<f64> + Copy, // Ensures T can be converted to f64
 {
-    fn new(p: Vec<T>) -> Self {
+    pub fn new(p: Vec<T>) -> Self {
         Point { p }
     }
 
-    fn dim(&self) -> usize {
+    pub fn dim(&self) -> usize {
         self.p.len()
     }
 
-    fn dist(&self) -> f64 {
+    pub fn dist(&self) -> f64 {
         self.p.iter().map(|&x| x.into().powi(2)).sum::<f64>().sqrt()
     }
 
-    fn apply(&self, func: fn(&Vec<T>) -> f64) -> f64 {
+    pub fn apply(&self, func: fn(&Vec<T>) -> f64) -> f64 {
         func(&self.p)
     }
 }
