@@ -25,6 +25,8 @@ where
         func(&self.p)
     }
 }
+
+// Implementing Add, Sub, Mul for Point<T>
 impl<T> Add<&Point<T>> for &Point<T>
 where
     T: Add<Output = T> + Copy,
@@ -76,6 +78,7 @@ where
     }
 }
 
+// Implementing scalar operations
 impl<T> Add<T> for &Point<T>
 where
     T: Add<Output = T> + Copy,
@@ -124,6 +127,55 @@ where
     }
 }
 
+// Ownership operations
+impl<T> Add<T> for Point<T>
+where
+    T: Add<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn add(self, scalar: T) -> Self::Output {
+        let p = self.p.iter().map(|&a| a + scalar).collect();
+        Point { p }
+    }
+}
+
+impl<T> Sub<T> for Point<T>
+where
+    T: Sub<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn sub(self, scalar: T) -> Self::Output {
+        let p = self.p.iter().map(|&a| a - scalar).collect();
+        Point { p }
+    }
+}
+
+impl<T> Mul<T> for Point<T>
+where
+    T: Mul<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn mul(self, scalar: T) -> Self::Output {
+        let p = self.p.iter().map(|&a| a * scalar).collect();
+        Point { p }
+    }
+}
+
+impl<T> Div<T> for Point<T>
+where
+    T: Div<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn div(self, scalar: T) -> Self::Output {
+        let p = self.p.iter().map(|&a| a / scalar).collect();
+        Point { p }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -146,6 +198,11 @@ mod tests {
         let iv2 = Point::new(vec![4, 5, 6]);
         let iv3 = &iv1 + &iv2;
         assert_eq!(iv3.p, vec![5, 7, 9]);
+
+        let fv1 = Point::new(vec![1.0, 2.0, 3.0]);
+        let fv2 = Point::new(vec![4.0, 5.0, 6.0]);
+        let fv3 = &fv1 + &fv2;
+        assert_eq!(fv3.p, vec![5.0, 7.0, 9.0]);
     }
 
     #[test]
@@ -191,8 +248,40 @@ mod tests {
     #[test]
     fn scalar_div() {
         let iv1 = Point::new(vec![10, 20, 30]);
-        let iv2 = &iv1 / 10;
+        let iv2 = &iv1 / (10);
         let iv3 = &iv1 / 20;
+        assert_eq!(iv2.p, vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn own_add() {
+        let iv1 = Point::new(vec![1, 2, 3]);
+        let iv2 = iv1.clone() + 10;
+        let iv3 = iv1.clone() + 20;
+        assert_eq!(iv2.p, vec![11, 12, 13]);
+    }
+
+    #[test]
+    fn own_sub() {
+        let iv1 = Point::new(vec![1, 2, 3]);
+        let iv2 = iv1.clone() - 10;
+        let iv3 = iv1.clone() - 20;
+        assert_eq!(iv2.p, vec![-9, -8, -7]);
+    }
+
+    #[test]
+    fn own_mul() {
+        let iv1 = Point::new(vec![1, 2, 3]);
+        let iv2 = iv1.clone() * 10;
+        let iv3 = iv1.clone() * 20;
+        assert_eq!(iv2.p, vec![10, 20, 30]);
+    }
+
+    #[test]
+    fn own_div() {
+        let iv1 = Point::new(vec![10, 20, 30]);
+        let iv2 = iv1.clone() / (10);
+        let iv3 = iv1.clone() / 20;
         assert_eq!(iv2.p, vec![1, 2, 3]);
     }
 
