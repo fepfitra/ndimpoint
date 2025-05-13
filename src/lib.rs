@@ -128,6 +128,58 @@ where
 }
 
 // Ownership operations
+impl<T> Add<Point<T>> for Point<T>
+where
+    T: Add<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn add(self, other: Point<T>) -> Self::Output {
+        let p = self
+            .p
+            .iter()
+            .zip(other.p.iter())
+            .map(|(&a, &b)| a + b)
+            .collect();
+        Point { p }
+    }
+}
+
+impl<T> Sub<Point<T>> for Point<T>
+where
+    T: Sub<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn sub(self, other: Point<T>) -> Self::Output {
+        let p = self
+            .p
+            .iter()
+            .zip(other.p.iter())
+            .map(|(&a, &b)| a - b)
+            .collect();
+        Point { p }
+    }
+}
+
+impl<T> Mul<Point<T>> for Point<T>
+where
+    T: Mul<Output = T> + Copy,
+{
+    type Output = Point<T>;
+
+    fn mul(self, other: Point<T>) -> Self::Output {
+        let p = self
+            .p
+            .iter()
+            .zip(other.p.iter())
+            .map(|(&a, &b)| a * b)
+            .collect();
+        Point { p }
+    }
+}
+
+// Ownership operations with scalar
 impl<T> Add<T> for Point<T>
 where
     T: Add<Output = T> + Copy,
@@ -252,19 +304,40 @@ mod tests {
     #[test]
     fn own_add() {
         let iv1 = Point::new(vec![1, 2, 3]);
+        let iv2 = iv1.clone() + Point::new(vec![4, 5, 6]);
+        assert_eq!(iv2.p, vec![5, 7, 9]);
+    }
+
+    #[test]
+    fn own_sub() {
+        let iv1 = Point::new(vec![1, 2, 3]);
+        let iv2 = iv1.clone() - Point::new(vec![4, 5, 6]);
+        assert_eq!(iv2.p, vec![-3, -3, -3]);
+    }
+
+    #[test]
+    fn own_mul() {
+        let iv1 = Point::new(vec![1, 2, 3]);
+        let iv2 = iv1.clone() * Point::new(vec![4, 5, 6]);
+        assert_eq!(iv2.p, vec![4, 10, 18]);
+    }
+
+    #[test]
+    fn own_scalar_add() {
+        let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.clone() + 10;
         assert_eq!(iv2.p, vec![11, 12, 13]);
     }
 
     #[test]
-    fn own_sub() {
+    fn own_scalar_sub() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.clone() - 10;
         assert_eq!(iv2.p, vec![-9, -8, -7]);
     }
 
     #[test]
-    fn own_mul() {
+    fn own_scalar_mul() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.clone() * 10;
         assert_eq!(iv2.p, vec![10, 20, 30]);
