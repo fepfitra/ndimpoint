@@ -225,7 +225,6 @@ mod tests {
     fn scalar_add() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = &iv1 + 10;
-        let iv3 = &iv1 + 20;
         assert_eq!(iv2.p, vec![11, 12, 13]);
     }
 
@@ -233,7 +232,6 @@ mod tests {
     fn scalar_sub() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = &iv1 - 10;
-        let iv3 = &iv1 - 20;
         assert_eq!(iv2.p, vec![-9, -8, -7]);
     }
 
@@ -241,15 +239,13 @@ mod tests {
     fn scalar_mul() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = &iv1 * 10;
-        let iv3 = &iv1 * 20;
         assert_eq!(iv2.p, vec![10, 20, 30]);
     }
 
     #[test]
     fn scalar_div() {
         let iv1 = Point::new(vec![10, 20, 30]);
-        let iv2 = &iv1 / (10);
-        let iv3 = &iv1 / 20;
+        let iv2 = &iv1 / 10;
         assert_eq!(iv2.p, vec![1, 2, 3]);
     }
 
@@ -257,7 +253,6 @@ mod tests {
     fn own_add() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.clone() + 10;
-        let iv3 = iv1.clone() + 20;
         assert_eq!(iv2.p, vec![11, 12, 13]);
     }
 
@@ -265,7 +260,6 @@ mod tests {
     fn own_sub() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.clone() - 10;
-        let iv3 = iv1.clone() - 20;
         assert_eq!(iv2.p, vec![-9, -8, -7]);
     }
 
@@ -273,15 +267,13 @@ mod tests {
     fn own_mul() {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.clone() * 10;
-        let iv3 = iv1.clone() * 20;
         assert_eq!(iv2.p, vec![10, 20, 30]);
     }
 
     #[test]
     fn own_div() {
         let iv1 = Point::new(vec![10, 20, 30]);
-        let iv2 = iv1.clone() / (10);
-        let iv3 = iv1.clone() / 20;
+        let iv2 = iv1.clone() / 10;
         assert_eq!(iv2.p, vec![1, 2, 3]);
     }
 
