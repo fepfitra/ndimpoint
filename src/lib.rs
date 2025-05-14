@@ -24,6 +24,10 @@ where
     pub fn apply(&self, func: fn(&[T]) -> f64) -> f64 {
         func(&self.p)
     }
+
+    pub fn data(&self) -> &[T] {
+        &self.p
+    }
 }
 
 // Implementing Add, Sub, Mul for Point<T>
@@ -292,6 +296,10 @@ mod tests {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = &iv1 * 10;
         assert_eq!(iv2.p, vec![10, 20, 30]);
+
+        let fv1 = Point::new(vec![0.0, 0.125]);
+        let fv1 = fv1 * 1678.0;
+        assert_eq!(fv1.p, vec![0.0, 209.75]);
     }
 
     #[test]
@@ -369,5 +377,12 @@ mod tests {
         let iv1 = Point::new(vec![1, 2, 3]);
         let iv2 = iv1.apply(|x| x[0] as f64 + x[1] as f64 + x[2] as f64);
         assert_eq!(iv2, 6.0);
+    }
+
+    #[test]
+    fn data() {
+        let iv1 = Point::new(vec![1, 2, 3]);
+        let data = iv1.data();
+        assert_eq!(data, &[1, 2, 3]);
     }
 }
