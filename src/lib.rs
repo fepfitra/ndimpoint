@@ -21,7 +21,7 @@ where
         self.p.iter().map(|&x| x.into().powi(2)).sum::<f64>().sqrt()
     }
 
-    pub fn apply(&self, func: fn(&[T]) -> f64) -> f64 {
+    pub fn apply<F: Fn(&[T]) -> f64>(&self, func: F) -> f64 {
         func(&self.p)
     }
 
